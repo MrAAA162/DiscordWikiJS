@@ -20,6 +20,7 @@ async function fetchWikiPages() {
               id
               title
               path
+              tags
               isPrivate
             }
           }
@@ -31,7 +32,8 @@ async function fetchWikiPages() {
             .map(page => ({
                 title: page.title,
                 path: page.path,
-                lowercaseTitle: page.title.toLowerCase()
+                lowercaseTitle: page.title.toLowerCase(),
+                tags: page.tags.map(tag => tag.toLowerCase())
             }));
     } catch (error) {
         console.error('Error fetching wiki pages:', error);
@@ -130,7 +132,8 @@ async function initializeBot() {
 
             const filtered = wikiPages
                 .filter(page =>
-                    page.lowercaseTitle.includes(focusedValue.toLowerCase())
+                    page.lowercaseTitle.includes(focusedValue.toLowerCase()) ||
+                    page.tags.some(tag => tag.toLowerCase().includes(focusedValue.toLowerCase()))
                 )
                 .slice(0, 25)
                 .map(page => ({
