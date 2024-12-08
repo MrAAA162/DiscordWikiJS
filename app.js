@@ -40,7 +40,7 @@ async function fetchWikiPages() {
 }
 
 async function initializeBot() {
-    app.get('/', (req, res) => {
+    app.get('/status', (req, res) => {
         res.status(200).send('Bot is running!');
     });
 
